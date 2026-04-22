@@ -25,4 +25,4 @@ Lo schema è progettato per supportare:
 ## Stato del progetto
 
 ✔ Milestone 1 - Semantic Foundation (in corso)
-- Schema Decision Card definito
+- Schema Decision Card definiton
