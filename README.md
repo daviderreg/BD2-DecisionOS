@@ -22,7 +22,32 @@ Lo schema è progettato per supportare:
 - MongoDB document-based storage
 - future integrazioni con vector search (RAG)
 
+## Setup configurazione e MongoDB
+
+### Prerequisiti
+- Python 3.x
+- MongoDB Atlas (cluster attivo)
+
+### Configurazione ambiente
+
+1. Creare un file `.env` nella root del progetto
+2. Copiare il contenuto di `.env.example`
+3. Inserire la propria stringa di connessione MongoDB
+
+Esempio:
+
+MONGODB_URI=your_mongodb_connection_string_here  
+MONGODB_DB_NAME=DecisionOS  
+MONGODB_COLLECTION=decisions  
+
+### Installazione dipendenze
+
+```bash
+pip install -r requirements.txt
+
+
 ## Stato del progetto
 
 ✔ Milestone 1 - Semantic Foundation (in corso)
 - Schema Decision Card definiton
+- Setup configurazione progetto e connessione MongoDB
