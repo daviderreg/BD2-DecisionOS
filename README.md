@@ -40,6 +40,15 @@ MONGODB_URI=your_mongodb_connection_string_here
 MONGODB_DB_NAME=DecisionOS  
 MONGODB_COLLECTION=decisions  
 
+## Database Service
+
+Il sistema include un layer di accesso ai dati tramite la classe `DatabaseService`.
+
+Questo componente è responsabile di:
+- connessione a MongoDB Atlas
+- inserimento delle Decision Card
+- verifica dell’indice vettoriale
+
 ### Installazione dipendenze
 
 ```bash
@@ -51,3 +60,4 @@ pip install -r requirements.txt
 ✔ Milestone 1 - Semantic Foundation (in corso)
 - Schema Decision Card definiton
 - Setup configurazione progetto e connessione MongoDB
+- DatabaseService per accesso ai dati
