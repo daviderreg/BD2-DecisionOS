@@ -49,6 +49,16 @@ Questo componente è responsabile di:
 - inserimento delle Decision Card
 - verifica dell’indice vettoriale
 
+## Vector Service
+
+Il sistema include un servizio per la generazione degli embedding tramite la classe `VectorService`.
+
+Questo componente è responsabile di:
+- generazione embedding a partire da testo (decisione + motivazione)
+- utilizzo di un modello configurabile tramite variabili d’ambiente
+- pulizia del testo prima della chiamata API
+- gestione errori e logging
+
 ### Installazione dipendenze
 
 ```bash
@@ -61,3 +71,4 @@ pip install -r requirements.txt
 - Schema Decision Card definiton
 - Setup configurazione progetto e connessione MongoDB
 - DatabaseService per accesso ai dati
+- VectorService per generazione embedding
