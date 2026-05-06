@@ -38,7 +38,9 @@ Esempio:
 
 MONGODB_URI=your_mongodb_connection_string_here  
 MONGODB_DB_NAME=DecisionOS  
-MONGODB_COLLECTION=decisions  
+MONGODB_COLLECTION=decisions 
+API_KEY=your_api_key  
+EMBEDDING_MODEL=gemini-embedding-001
 
 ## Database Service
 
@@ -59,6 +61,21 @@ Questo componente è responsabile di:
 - pulizia del testo prima della chiamata API
 - gestione errori e logging
 
+## Seeding Pipeline
+
+Il sistema include una pipeline di inserimento dati tramite la classe `SeedingPipeline`.
+
+Questo componente è responsabile di:
+- processamento di un dataset (Gold Dataset)
+- validazione dei dati tramite `DecisionCard`
+- generazione embedding tramite `VectorService`
+- inserimento nel database tramite `DatabaseService`
+- gestione errori e logging durante il processo
+
+La pipeline esegue il flusso:
+validazione → embedding → inserimento
+Lanciare la classe `verify_dimensions` per verificare la dimensione reale dei vettori nel database 
+
 ### Installazione dipendenze
 
 ```bash
@@ -67,8 +84,9 @@ pip install -r requirements.txt
 
 ## Stato del progetto
 
-✔ Milestone 1 - Semantic Foundation (in corso)
+✔ Milestone 1 - Semantic Foundation (completata)
 - Schema Decision Card definiton
 - Setup configurazione progetto e connessione MongoDB
 - DatabaseService per accesso ai dati
 - VectorService per generazione embedding
+- SeedingPipeline per inserimento dati
