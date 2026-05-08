@@ -76,6 +76,22 @@ La pipeline esegue il flusso:
 validazione → embedding → inserimento
 Lanciare la classe `verify_dimensions` per verificare la dimensione reale dei vettori nel database 
 
+## API Data Models
+
+Il sistema utilizza DTO (Data Transfer Objects) separati per supportare la validazione delle API FastAPI.
+
+Sono presenti:
+- `DecisionCardCreate`
+- `DecisionCardUpdate`
+- `DecisionCardResponse`
+
+La serializzazione degli ObjectId MongoDB è gestita tramite `PyObjectId`.
+
+Il layer di validazione utilizza Pydantic per garantire:
+- validazione input/output
+- compatibilità MongoDB
+- separazione tra schema database e schema API
+
 ### Installazione dipendenze
 
 ```bash
@@ -90,3 +106,10 @@ pip install -r requirements.txt
 - DatabaseService per accesso ai dati
 - VectorService per generazione embedding
 - SeedingPipeline per inserimento dati
+
+## Copyright
+
+© 2026 **DecisionOS**. Tutti i diritti riservati.
+
+Questo software e la relativa documentazione sono proprietà intellettuale di **DecisionOS**. 
+È vietata la riproduzione, la copia o la distribuzione non autorizzata di qualsiasi parte del codice o del design.
