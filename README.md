@@ -47,9 +47,16 @@ EMBEDDING_MODEL=gemini-embedding-001
 Il sistema include un layer di accesso ai dati tramite la classe `DatabaseService`.
 
 Questo componente è responsabile di:
+
 - connessione a MongoDB Atlas
-- inserimento delle Decision Card
+- creazione documenti
+- recupero Decision Card singole
+- recupero liste di Decision Card
+- aggiornamento documenti
+- eliminazione documenti
+- gestione ObjectId MongoDB
 - verifica dell’indice vettoriale
+- gestione errori e logging
 
 ## Vector Service
 
@@ -106,6 +113,12 @@ pip install -r requirements.txt
 - DatabaseService per accesso ai dati
 - VectorService per generazione embedding
 - SeedingPipeline per inserimento dati
+
+🚧 Milestone 2 - The Memory Engine (in corso)
+
+- DTO API e validazione
+- CRUD MongoDB
+
 
 ## Copyright
 

@@ -1,3 +1,4 @@
+# © 2026 DecisionOS - Tutti i diritti riservati.
 from pymongo import MongoClient, ReturnDocument
 from config import settings
 from bson import ObjectId
