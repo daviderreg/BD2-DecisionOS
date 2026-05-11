@@ -1,3 +1,4 @@
+# © 2026 DecisionOS - Tutti i diritti riservati.
 import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import load_dotenv

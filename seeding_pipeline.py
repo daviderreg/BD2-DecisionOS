@@ -1,3 +1,4 @@
+# © 2026 DecisionOS - Tutti i diritti riservati.
 from models import DecisionCard
 from vector_service import VectorService
 from database_service import DatabaseService

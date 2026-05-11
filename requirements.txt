@@ -3,3 +3,5 @@ pydantic
 pydantic-settings
 python-dotenv
 requests
+fastapi 
+uvicorn #python -m uvicorn main:app --reload
