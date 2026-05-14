@@ -99,6 +99,52 @@ Il layer di validazione utilizza Pydantic per garantire:
 - compatibilità MongoDB
 - separazione tra schema database e schema API
 
+## FastAPI API
+
+Il sistema espone una REST API tramite FastAPI per la gestione completa delle Decision Card.
+
+Sono disponibili endpoint per:
+
+creazione decisioni
+recupero decisioni
+aggiornamento decisioni
+eliminazione decisioni
+
+L’API integra:
+
+DatabaseService
+VectorService
+DTO Pydantic
+
+Gli embedding vengono generati automaticamente durante la creazione e aggiornati quando cambiano:
+
+decisione_finale
+motivazione
+
+## Avvio server
+python -m uvicorn main:app --reload
+
+## Documentazione API
+
+Una volta avviato il server:
+
+Swagger UI: http://127.0.0.1:8000/docs
+ReDoc: http://127.0.0.1:8000/redoc
+
+## Architettura del sistema
+
+Il sistema è organizzato nei seguenti layer:
+
+- API Layer (`main.py`)
+- Validation Layer (`models.py`)
+- Persistence Layer (`database_service.py`)
+- Embedding Layer (`vector_service.py`)
+- Data Ingestion Layer (`seeding_pipeline.py`)
+
+Flusso principale:
+
+API Request → Validation → Embedding Generation → MongoDB Persistence
+
 ### Installazione dipendenze
 
 ```bash
@@ -118,6 +164,9 @@ pip install -r requirements.txt
 
 - DTO API e validazione
 - CRUD MongoDB
+- REST API FastAPI
+- Gestione automatica embedding
+- Lifecycle completo Decision Card
 
 
 ## Copyright
