@@ -83,6 +83,32 @@ La pipeline esegue il flusso:
 validazione → embedding → inserimento
 Lanciare la classe `verify_dimensions` per verificare la dimensione reale dei vettori nel database 
 
+## Search Service
+
+Il sistema include un servizio di ricerca semantica tramite la classe `SearchService`.
+Questo componente è responsabile del recupero dei documenti più rilevanti dalla memoria aziendale attraverso similarità vettoriale.
+
+Responsabilità principali:
+- generazione embedding della query tramite `VectorService`
+- esecuzione di query semantiche su MongoDB Atlas
+- utilizzo dell’operatore `$vectorSearch`
+- ricerca basata su cosine similarity
+- recupero dei documenti più rilevanti (top-k)
+- gestione errori e logging
+
+Pipeline di ricerca:
+Query testuale  
+→ Embedding query  
+→ Vector Search su MongoDB Atlas  
+→ Ranking per similarità  
+→ Output documenti rilevanti
+
+Configurazione tecnica:
+- indice vettoriale: `vector_index`
+- campo embedding: `embedding`
+- metrica: cosine similarity
+- top_k configurabile (default: 3)
+
 ## API Data Models
 
 Il sistema utilizza DTO (Data Transfer Objects) separati per supportare la validazione delle API FastAPI.
@@ -140,6 +166,7 @@ Il sistema è organizzato nei seguenti layer:
 - Persistence Layer (`database_service.py`)
 - Embedding Layer (`vector_service.py`)
 - Data Ingestion Layer (`seeding_pipeline.py`)
+- Retrieval Layer (`search_service.py`)
 
 Flusso principale:
 
@@ -160,13 +187,15 @@ pip install -r requirements.txt
 - VectorService per generazione embedding
 - SeedingPipeline per inserimento dati
 
-🚧 Milestone 2 - The Memory Engine (in corso)
-
+✔ Milestone 2 - The Memory Engine (completata)
 - DTO API e validazione
 - CRUD MongoDB
 - REST API FastAPI
 - Gestione automatica embedding
 - Lifecycle completo Decision Card
+
+🚧 Milestone 3 - RAG Pipeline (in corso)
+- SearchService per ricerca semantica 
 
 
 ## Copyright
