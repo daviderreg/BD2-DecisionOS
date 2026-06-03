@@ -80,7 +80,9 @@ Questo componente è responsabile di:
 - gestione errori e logging durante il processo
 
 La pipeline esegue il flusso:
+
 validazione → embedding → inserimento
+
 Lanciare la classe `verify_dimensions` per verificare la dimensione reale dei vettori nel database 
 
 ## Search Service
@@ -109,6 +111,86 @@ Configurazione tecnica:
 - metrica: cosine similarity
 - top_k configurabile (default: 3)
 
+## RAG Service
+
+Il sistema include un servizio di orchestrazione della pipeline RAG tramite la classe `RAGService`.
+
+Questo componente è responsabile della generazione di risposte basate sul contenuto della memoria aziendale, utilizzando esclusivamente le informazioni recuperate tramite ricerca semantica.
+
+Responsabilità principali
+
+- integrazione con `SearchService`
+- recupero dei documenti semanticamente rilevanti
+- assemblaggio del contesto per il modello LLM
+- definizione del prompt di sistema
+- generazione della risposta tramite AI
+- restituzione delle fonti utilizzate
+- gestione errori e logging
+
+Pipeline RAG
+
+Query utente  
+→ Retrieval (SearchService)  
+→ Context Assembly  
+→ Prompt Engineering  
+→ LLM Generation  
+→ Response + Sources
+
+### Anti-Hallucination Strategy
+
+Il sistema utilizza un prompt rigoroso per garantire che il modello:
+
+- utilizzi esclusivamente il contesto recuperato
+- non introduca informazioni esterne
+- dichiari esplicitamente quando l'informazione non è presente
+- citi sempre le Decision Card utilizzate come fonte
+
+Questo approccio permette di ottenere risposte verificabili e coerenti con i dati memorizzati nel sistema.
+
+## RAG API Endpoint (/ask)
+
+Il sistema espone un endpoint di interrogazione semantica basato su pipeline RAG.
+
+Endpoint
+
+POST /ask
+
+Descrizione
+
+Permette di interrogare la memoria aziendale utilizzando linguaggio naturale.
+La risposta viene generata esclusivamente a partire dai dati presenti nel database tramite retrieval semantico e LLM.
+
+---
+
+Request
+json id="ask_request"
+{
+  "question": "string"
+}
+
+Response
+{
+  "answer": "string",
+  "sources": ["id1", "id2"]
+}
+
+Pipeline eseguita
+
+Query utente
+→ Embedding query
+→ Vector Search (MongoDB Atlas)
+→ Context Assembly
+→ Prompt Engineering
+→ LLM Generation
+→ Response + Sources
+
+### Comportamento del sistema
+
+risponde solo usando dati presenti nel database
+se non trova informazioni rilevanti risponde con messaggio standard di fallback
+restituisce sempre le Decision Card utilizzate come fonti
+evita allucinazioni tramite prompt vincolato
+
 ## API Data Models
 
 Il sistema utilizza DTO (Data Transfer Objects) separati per supportare la validazione delle API FastAPI.
@@ -136,16 +218,27 @@ recupero decisioni
 aggiornamento decisioni
 eliminazione decisioni
 
+Endpoint disponibili:
+
+POST /decisions
+GET /decisions
+GET /decisions/{id}
+PUT /decisions/{id}
+DELETE /decisions/{id}
+POST /ask
+
 L’API integra:
 
 DatabaseService
 VectorService
 DTO Pydantic
+SearchService
+RAGService
 
 Gli embedding vengono generati automaticamente durante la creazione e aggiornati quando cambiano:
 
-decisione_finale
-motivazione
+- decisione_finale
+- motivazione
 
 ## Avvio server
 python -m uvicorn main:app --reload
@@ -167,10 +260,15 @@ Il sistema è organizzato nei seguenti layer:
 - Embedding Layer (`vector_service.py`)
 - Data Ingestion Layer (`seeding_pipeline.py`)
 - Retrieval Layer (`search_service.py`)
+- RAG Layer (`rag_service.py`)
 
 Flusso principale:
 
 API Request → Validation → Embedding Generation → MongoDB Persistence
+
+Nota architetturale:
+
+Il sistema implementa un’architettura a pipeline disaccoppiate orientata a Retrieval Augmented Generation con separazione netta tra retrieval, orchestration e generation.
 
 ### Installazione dipendenze
 
@@ -194,9 +292,12 @@ pip install -r requirements.txt
 - Gestione automatica embedding
 - Lifecycle completo Decision Card
 
-🚧 Milestone 3 - RAG Pipeline (in corso)
+✔ Milestone 3 - RAG Pipeline (completata)
 - SearchService per ricerca semantica 
+- RAG Service per orchestrazione Retrieval e Generation
+- Endpoint /ask per interrogazione naturale
 
+🚧 Milestone 4 - RAG Pipeline (in corso)
 
 ## Copyright
 
