@@ -1,0 +1,19 @@
+# Segreti e credenziali (FONDAMENTALE)
+.env
+*.log
+
+# File temporanei di Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# File di sistema (inutili)
+.DS_Store
+Thumbs.db
+node_modules/
+
+
+# Cartelle degli ambienti virtuali (se ne usi uno)
+venv/
+env/
