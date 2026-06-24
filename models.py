@@ -20,7 +20,10 @@ class PyObjectId(ObjectId):
         from pydantic_core import core_schema
         return core_schema.json_or_python_schema(
             json_schema=core_schema.str_schema(),
-            python_schema=core_schema.is_instance_schema(ObjectId),
+            python_schema=core_schema.union_schema([
+                core_schema.is_instance_schema(ObjectId),
+                core_schema.str_schema(),
+            ]),
             serialization=core_schema.plain_serializer_function_ser_schema(lambda x: str(x)),
         )
 
@@ -30,8 +33,8 @@ class AlternativeScartata(BaseModel):
 
 class DecisionCardBase(BaseModel):
     titolo: str = Field(..., min_length=3, max_length=255)
-    decisione_finale: str = Field(..., min_length=10)
-    motivazione: str = Field(..., min_length=10)
+    decisione_finale: str = Field(..., min_length=3)
+    motivazione: str = Field(..., min_length=3)
     alternative_scartate: List[AlternativeScartata] = []
     decisori: List[str] = []
     tags: List[str] = []

@@ -1,5 +1,6 @@
 # © 2026 DecisionOS - Tutti i diritti riservati.
 from fastapi import FastAPI, HTTPException, Query, status
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from datetime import datetime
 from bson import ObjectId
@@ -15,6 +16,15 @@ app = FastAPI(
     title="DecisionOS - Memory Engine API",
     description="API per la gestione del ciclo di vita delle Decision Cards e Interrogazione Semantica (RAG)",
     version="3.0.0"
+)
+
+# --- CORS Configuration ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --- Dependency Injection ---
@@ -61,7 +71,7 @@ async def create_decision(payload: DecisionCardCreate):
 
 @app.get("/decisions", response_model=List[DecisionCardResponse])
 async def list_decisions(
-    limit: int = Query(10, ge=1, le=100), 
+    limit: int = Query(100, ge=1, le=100), 
     offset: int = Query(0, ge=0)
 ):
     docs = db_service.get_decisions(limit, offset)
@@ -120,4 +130,3 @@ async def ask_dss(payload: AskRequest):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
             detail=str(e)
         )
-
