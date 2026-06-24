@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { DecisionAPI } from '../services/api';
-import { X, Clock, Users, Tag, AlertCircle, ArrowLeft } from 'lucide-react';
+import { X, Clock, Users, Tag, AlertCircle, ArrowLeft, Trash2 } from 'lucide-react';
 
-export default function DecisionDetail({ id, onClose }) {
+export default function DecisionDetail({ id, onClose, onDelete }) {
   const [decision, setDecision] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,6 +46,18 @@ export default function DecisionDetail({ id, onClose }) {
 
   if (!decision) return null;
 
+  const handleRemove = async () => {
+    if (window.confirm("Sei sicuro di voler eliminare questa Decision Card? Questa azione è irreversibile.")) {
+      try {
+        await DecisionAPI.delete(id);
+        onDelete(); 
+      } catch (err) {
+        alert("Errore nell'eliminazione del documento.");
+        console.error(err);
+      }
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm transition-all">
       {/* Overlay per chiudere al click fuori */}
@@ -59,9 +71,19 @@ export default function DecisionDetail({ id, onClose }) {
           <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500">
             <ArrowLeft size={20} />
           </button>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500">
-            <X size={20} />
-          </button>
+          
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={handleRemove}
+              className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+              title="Elimina Decisione"
+            >
+              <Trash2 size={20} />
+            </button>
+            <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500">
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         <div className="p-8 space-y-8">

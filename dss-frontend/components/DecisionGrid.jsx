@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DecisionAPI } from '../services/api';
 import { Plus, Search, Edit3, Loader2 } from 'lucide-react';
 
-export default function DecisionGrid({ onSelectDecision, onCreateClick, onSemanticSearch, semanticResults, onClearSearch }) {
+export default function DecisionGrid({ onSelectDecision, onCreateClick, onEditClick, onSemanticSearch, semanticResults, onClearSearch }) {
   const [decisions, setDecisions] = useState([]);
   const [filter, setFilter] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -94,7 +94,12 @@ export default function DecisionGrid({ onSelectDecision, onCreateClick, onSemant
             >
               <div className="flex justify-between items-start mb-2">
                 <h4 className="font-bold text-slate-800 group-hover:text-blue-600 transition-colors line-clamp-1">{doc.titolo}</h4>
-                <Edit3 size={14} className="text-slate-400" />
+                <button 
+                  onClick={(e) => { e.stopPropagation(); onEditClick(doc); }}
+                  className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-blue-600 transition-colors"
+                >
+                  <Edit3 size={14} />
+                </button>
               </div>
               <p className="text-xs text-slate-500 line-clamp-2 mb-3">{doc.motivazione}</p>
               <div className="flex flex-wrap gap-1">
