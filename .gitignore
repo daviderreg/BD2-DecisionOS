@@ -12,6 +12,8 @@ __pycache__/
 .DS_Store
 Thumbs.db
 node_modules/
+CLINE
+.next/
 
 
 # Cartelle degli ambienti virtuali (se ne usi uno)

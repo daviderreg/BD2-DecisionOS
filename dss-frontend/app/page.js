@@ -4,10 +4,12 @@ import ChatInterface from '../components/ChatInterface';
 import DecisionGrid from '../components/DecisionGrid';
 import DecisionDetail from '../components/DecisionDetail';
 import DecisionModal from '../components/DecisionModal';
+import { DecisionAPI } from '../services/api';
 
 export default function DSSDashboard() {
   const [selectedDecisionId, setSelectedDecisionId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [decisionToEdit, setDecisionToEdit] = useState(null);
   const [refreshCount, setRefreshCount] = useState(0);
   const [semanticResults, setSemanticResults] = useState(null);
 
@@ -16,6 +18,16 @@ export default function DSSDashboard() {
     setRefreshCount(prev => prev + 1);
     setSemanticResults(null);
   }, []);
+
+  const handleOpenCreate = () => {
+    setDecisionToEdit(null);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEdit = (decision) => {
+    setDecisionToEdit(decision);
+    setIsModalOpen(true);
+  };
 
   return (
     <main className="min-h-screen bg-slate-100 p-6">
@@ -31,11 +43,12 @@ export default function DSSDashboard() {
         <div className="grid grid-cols-12 gap-6">
           {/* Colonna Sinistra: Gestione Decisioni */}
           <div className="col-span-12 lg:col-span-7 space-y-6">
-            <DecisionGrid 
-              key={refreshCount}
-              onSelectDecision={(id) => setSelectedDecisionId(id)} 
-              onCreateClick={() => setIsModalOpen(true)}
-              onSemanticSearch={async (query) => {
+             <DecisionGrid 
+               key={refreshCount}
+               onSelectDecision={(id) => setSelectedDecisionId(id)} 
+               onCreateClick={handleOpenCreate}
+               onEditClick={handleOpenEdit}
+               onSemanticSearch={async (query) => {
                 try {
                   const { data } = await DecisionAPI.ask(query);
                   // Data contiene { answer: "...", sources: ["id1", "id2"] }
@@ -48,12 +61,16 @@ export default function DSSDashboard() {
               onClearSearch={() => setSemanticResults(null)}
             />
             
-            {selectedDecisionId && (
-              <DecisionDetail 
-                id={selectedDecisionId} 
-                onClose={() => setSelectedDecisionId(null)} 
-              />
-            )}
+             {selectedDecisionId && (
+               <DecisionDetail 
+                 id={selectedDecisionId} 
+                 onClose={() => setSelectedDecisionId(null)} 
+                 onDelete={() => {
+                   setSelectedDecisionId(null);
+                   refreshData();
+                 }} 
+               />
+             )}
           </div>
 
           {/* Colonna Destra: AI Interface */}
@@ -63,13 +80,12 @@ export default function DSSDashboard() {
         </div>
       </div>
 
-      {/* Modal di Creazione */}
-      {isModalOpen && (
-        <DecisionModal 
-          onClose={() => setIsModalOpen(false)} 
-          onRefresh={refreshData} 
-        />
-      )}
+       <DecisionModal 
+         isOpen={isModalOpen}
+         decisionToEdit={decisionToEdit}
+         onClose={() => setIsModalOpen(false)} 
+         onRefresh={refreshData} 
+       />
     </main>
   );
 }

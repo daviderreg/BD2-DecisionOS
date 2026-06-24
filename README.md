@@ -240,7 +240,25 @@ Gli embedding vengono generati automaticamente durante la creazione e aggiornati
 - decisione_finale
 - motivazione
 
-## Avvio server
+## Frontend Interface (DSS Frontend)
+
+Il sistema include un'interfaccia utente moderna sviluppata con Next.js e Tailwind CSS per l'interazione con la memoria aziendale.
+
+### Funzionalità implementate:
+- **Decision Grid**: Visualizzazione a schede delle decisioni memorizzate con trigger rapidi per l'editing.
+- **Dual-Mode Modal**: Interfaccia unificata per la creazione di nuove decisioni e l'aggiornamento di quelle esistenti.
+- **Decision Detail**: Vista dettagliata della singola decisione con integrazione del flusso di rimozione sicura.
+- **State Orchestration**: Gestione reattiva dello stato globale per aggiornamenti istantanei dell'interfaccia senza refresh.
+- **Interazione RAG**: Integrazione fluida con l'endpoint `/ask` per interrogazioni in linguaggio naturale.
+
+### Avvio Frontend
+```bash
+cd dss-frontend
+npm install
+npm run dev
+```
+
+## Avvio server Backend
 python -m uvicorn main:app --reload
 
 ## Documentazione API
@@ -261,6 +279,7 @@ Il sistema è organizzato nei seguenti layer:
 - Data Ingestion Layer (`seeding_pipeline.py`)
 - Retrieval Layer (`search_service.py`)
 - RAG Layer (`rag_service.py`)
+- UI Layer (`dss-frontend/`)
 
 Flusso principale:
 
@@ -274,7 +293,7 @@ Il sistema implementa un’architettura a pipeline disaccoppiate orientata a Ret
 
 ```bash
 pip install -r requirements.txt
-
+```
 
 ## Stato del progetto
 
@@ -297,7 +316,11 @@ pip install -r requirements.txt
 - RAG Service per orchestrazione Retrieval e Generation
 - Endpoint /ask per interrogazione naturale
 
-🚧 Milestone 4 - RAG Pipeline (in corso)
+✔ Milestone 4 - Frontend Integration (completata)
+- Interfaccia utente Decision Grid e Decision Detail
+- Flusso CRUD completo (Create, Read, Update, Delete)
+- Integrazione interfaccia RAG
+- Sincronizzazione stato reattiva
 
 ## Copyright
 
