@@ -4,6 +4,28 @@
 
 Sistema per la gestione e memorizzazione di decisioni aziendali con supporto a ricerca semantica (RAG) e MongoDB Atlas.
 
+                    ┌──────────────┐
+                    │   Frontend   │
+                    │ Next.js      │
+                    └──────┬───────┘
+                           │
+                        REST API
+                           │
+                    ┌──────▼───────┐
+                    │   FastAPI    │
+                    └──────┬───────┘
+                           │
+          ┌────────────────┼────────────────┐
+          │                │                │
+     DatabaseService  VectorService   RAGService
+          │                │                │
+          ▼                ▼                ▼
+      MongoDB Atlas    Embeddings       LLM
+                           │
+                           ▼
+                    Vector Search
+
+
 ## Decision Card Schema
 
 Il sistema utilizza il seguente modello dati:
